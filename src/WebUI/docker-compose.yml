@@ -1,0 +1,16 @@
+﻿version: "3.7"
+services:
+  sql-server-db:
+    container_name: valhalla-db
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    ports:
+      - "1434:1434"
+    user: 'root'
+    environment:
+      SA_PASSWORD: "codenjord2019SA"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    volumes:
+      - C:\MSSQL\BACKUP\KEEP:/var/opt/mssql/backups
+      - /var/lib/docker/volumes/mssqluser/_data:/var/opt/sqlserver
+      - /var/lib/docker/volumes/mssqlsystem/_data:/var/opt/mssql
