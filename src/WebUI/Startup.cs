@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+
+using System;
+using System.Linq;
 
 using Valhalla.Application;
 using Valhalla.Infrastructure;
+using Valhalla.Web.Installers;
 using Valhalla.Web.Options;
 
 namespace Valhalla.Web
@@ -26,17 +29,7 @@ namespace Valhalla.Web
             services.AddApplication();
             services.AddInfrastructure(Configuration);
 
-            services.AddControllers();
-
-            services.AddSwaggerGen(x =>
-            {
-                const string version = "v1";
-                x.SwaggerDoc(version, new OpenApiInfo
-                {
-                    Title = "Valhalla API",
-                    Version = version
-                });
-            });
+            services.InstallServicesInAssembly(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
