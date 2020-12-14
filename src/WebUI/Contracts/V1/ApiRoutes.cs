@@ -2,11 +2,11 @@
 {
     public static class ApiRoutes
     {
-        public const string Root = "api";
-        public const string Version = "v1";
-        public const string Base = Root + "/" + Version;
+        private const string _root = "api";
+        private const string _version = "v1";
+        private const string _base = _root + "/" + _version;
 
-        public const string Addresses = Base + "/addresses";
-        public const string People = Base + "/people";
+        public const string Addresses = _base + "/addresses";
+        public const string People = _base + "/people";
     }
 }

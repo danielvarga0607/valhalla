@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
-
 using MediatR;
-
 using Microsoft.EntityFrameworkCore;
-
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Valhalla.Application.Common.Extensions;
+using Valhalla.Application.Common.Exceptions;
 using Valhalla.Application.Common.Interfaces;
 using Valhalla.Domain.Entities;
 

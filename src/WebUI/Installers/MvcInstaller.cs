@@ -1,6 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation.AspNetCore;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+
+using Valhalla.Web.Filters;
 
 namespace Valhalla.Web.Installers
 {
@@ -8,7 +12,9 @@ namespace Valhalla.Web.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllers();
+            services
+                .AddControllers(options => options.Filters.Add(new ApiExceptionFilterAttribute()))
+                .AddFluentValidation();
 
             services.AddSwaggerGen(x =>
             {

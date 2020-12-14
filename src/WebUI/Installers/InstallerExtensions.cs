@@ -12,7 +12,8 @@ namespace Valhalla.Web.Installers
         {
             var installers = typeof(Startup).Assembly.ExportedTypes
                 .Where(exportedType => typeof(IInstaller).IsAssignableFrom(exportedType) &&
-                                       !exportedType.IsInterface && !exportedType.IsAbstract)
+                                       !exportedType.IsInterface &&
+                                       !exportedType.IsAbstract)
                 .Select(Activator.CreateInstance)
                 .Cast<IInstaller>()
                 .ToList();
@@ -20,4 +21,4 @@ namespace Valhalla.Web.Installers
             installers.ForEach(installer => installer.InstallServices(services, configuration));
         }
     }
-}
+ }

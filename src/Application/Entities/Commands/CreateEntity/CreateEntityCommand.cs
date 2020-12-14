@@ -1,22 +1,20 @@
 ﻿using AutoMapper;
-
 using MediatR;
-
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Valhalla.Application.Common.Interfaces;
 using Valhalla.Domain.Entities;
 
 namespace Valhalla.Application.Entities.Commands.CreateEntity
 {
-    public class CreateEntityCommand<TEntity> : IRequest<Guid>
+    public class CreateEntityCommand<TDto> : IRequest<Guid> where TDto : IDto
     {
-        public IDto Dto { get; set; }
+        public TDto Dto { get; set; }
     }
 
-    public class CreateEntityCommandHandler<TEntity> : IRequestHandler<CreateEntityCommand<TEntity>, Guid>
+    public class CreateEntityCommandHandler<TDto, TEntity> : IRequestHandler<CreateEntityCommand<TDto>, Guid>
+        where TDto : IDto
         where TEntity : EntityBase
     {
         private readonly IMapper _mapper;
@@ -30,12 +28,12 @@ namespace Valhalla.Application.Entities.Commands.CreateEntity
             _valhallaDbContext = valhallaDbContext;
         }
 
-        public async Task<Guid> Handle(CreateEntityCommand<TEntity> request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateEntityCommand<TDto> request, CancellationToken cancellationToken)
         {
-            TEntity entity = _mapper.Map<TEntity>(request.Dto);
+            var entity = _mapper.Map<TEntity>(request.Dto);
 
-            await _valhallaDbContext.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
-            await _valhallaDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await _valhallaDbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
+            await _valhallaDbContext.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
         }

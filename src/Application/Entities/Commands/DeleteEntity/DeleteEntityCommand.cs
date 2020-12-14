@@ -1,19 +1,15 @@
 ﻿using MediatR;
-
 using Microsoft.EntityFrameworkCore;
-
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Valhalla.Application.Common.Extensions;
+using Valhalla.Application.Common.Exceptions;
 using Valhalla.Application.Common.Interfaces;
 using Valhalla.Domain.Entities;
 
 namespace Valhalla.Application.Entities.Commands.DeleteEntity
 {
-    public class DeleteEntityCommand<TEntity> : IRequest<bool>
-        where TEntity : EntityBase
+    public class DeleteEntityCommand<TEntity> : IRequest<bool> where TEntity : EntityBase
     {
         public Guid Id { get; set; }
     }

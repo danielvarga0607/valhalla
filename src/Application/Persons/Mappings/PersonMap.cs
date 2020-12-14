@@ -1,12 +1,12 @@
-﻿using AutoMapper;
-
-using System;
-
+﻿using System;
+using AutoMapper;
+using JetBrains.Annotations;
 using Valhalla.Application.Persons.Queries.GetPersons;
 using Valhalla.Domain.Entities;
 
-namespace Valhalla.Application.Common.Mappings
+namespace Valhalla.Application.Persons.Mappings
 {
+    [UsedImplicitly]
     public class PersonMap : Profile
     {
         public PersonMap()

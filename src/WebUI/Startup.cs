@@ -3,10 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using System;
-using System.Linq;
-
 using Valhalla.Application;
 using Valhalla.Infrastructure;
 using Valhalla.Web.Installers;

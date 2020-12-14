@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Valhalla.Application.Common.Extensions
+namespace Valhalla.Application.Common.Exceptions
 {
     public class NotFoundException : Exception
     {
