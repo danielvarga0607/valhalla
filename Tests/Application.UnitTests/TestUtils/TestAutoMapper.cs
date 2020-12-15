@@ -18,7 +18,7 @@ namespace Application.UnitTests.TestUtils
 
                 var configuration = new MapperConfiguration(cfg => cfg
                     .AddProfiles(AutoMapperProfiles.Get));
-                _instance = new Lazy<IMapper>(() => new Mapper(configuration));
+                _instance = new Lazy<IMapper>(() => configuration.CreateMapper());
 
                 return _instance.Value;
             }

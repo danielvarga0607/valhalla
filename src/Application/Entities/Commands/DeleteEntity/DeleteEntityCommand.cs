@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,12 +8,12 @@ using Valhalla.Domain.Entities;
 
 namespace Valhalla.Application.Entities.Commands.DeleteEntity
 {
-    public class DeleteEntityCommand<TEntity> : IRequest<bool> where TEntity : EntityBase
+    public class DeleteEntityCommand<TEntity> : IRequest<int> where TEntity : EntityBase
     {
         public Guid Id { get; set; }
     }
 
-    public class DeleteEntityCommandHandler<TEntity> : IRequestHandler<DeleteEntityCommand<TEntity>, bool>
+    public class DeleteEntityCommandHandler<TEntity> : IRequestHandler<DeleteEntityCommand<TEntity>, int>
         where TEntity : EntityBase
     {
         private readonly IValhallaDbContext _valhallaDbContext;
@@ -25,19 +24,18 @@ namespace Valhalla.Application.Entities.Commands.DeleteEntity
             _valhallaDbContext = valhallaDbContext;
         }
 
-        public async Task<bool> Handle(DeleteEntityCommand<TEntity> request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeleteEntityCommand<TEntity> request, CancellationToken cancellationToken)
         {
-            var entity = await _valhallaDbContext.Set<TEntity>().FindAsync(request.Id).ConfigureAwait(false);
+            var entitySet = _valhallaDbContext.Set<TEntity>();
+            var entity = await entitySet.FindAsync(request.Id);
 
             if (entity is null)
             {
                 throw new NotFoundException(nameof(TEntity), request.Id);
             }
 
-            _valhallaDbContext.Entry(entity).State = EntityState.Deleted;
-            await _valhallaDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-            return true;
+            entitySet.Remove(entity);
+            return await _valhallaDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

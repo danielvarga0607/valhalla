@@ -24,9 +24,9 @@ namespace Valhalla.Web.Controllers.V1
                 return BadRequest();
             }
 
-            var entityId = await Mediator.Send(new CreateEntityCommand<AddressDto> {Dto = dto});
+            var entity = await Mediator.Send(new CreateEntityCommand<AddressDto, Address> {Dto = dto});
 
-            return Created(HttpContext.GetLocation(entityId), dto);
+            return Created(HttpContext.GetLocation(entity.Id), entity);
         }
 
         [HttpGet("{id:Guid}")]

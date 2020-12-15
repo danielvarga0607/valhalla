@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using JetBrains.Annotations;
 using Valhalla.Application.Persons.Queries.GetPersons;
 using Valhalla.Domain.Entities;
@@ -12,8 +11,7 @@ namespace Valhalla.Application.Persons.Mappings
         public PersonMap()
         {
             CreateMap<PersonDto, Person>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id == default ? Guid.NewGuid() : src.Id));
-
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<Person, PersonDto>();
         }
     }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Valhalla.Application.Common.Interfaces;
@@ -8,12 +7,14 @@ using Valhalla.Domain.Entities;
 
 namespace Valhalla.Application.Entities.Commands.CreateEntity
 {
-    public class CreateEntityCommand<TDto> : IRequest<Guid> where TDto : IDto
+    public class CreateEntityCommand<TDto, TEntity> : IRequest<TEntity>
+        where TDto : IDto
+        where TEntity : EntityBase
     {
         public TDto Dto { get; set; }
     }
 
-    public class CreateEntityCommandHandler<TDto, TEntity> : IRequestHandler<CreateEntityCommand<TDto>, Guid>
+    public class CreateEntityCommandHandler<TDto, TEntity> : IRequestHandler<CreateEntityCommand<TDto, TEntity>, TEntity>
         where TDto : IDto
         where TEntity : EntityBase
     {
@@ -28,14 +29,14 @@ namespace Valhalla.Application.Entities.Commands.CreateEntity
             _valhallaDbContext = valhallaDbContext;
         }
 
-        public async Task<Guid> Handle(CreateEntityCommand<TDto> request, CancellationToken cancellationToken)
+        public async Task<TEntity> Handle(CreateEntityCommand<TDto, TEntity> request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<TEntity>(request.Dto);
 
             await _valhallaDbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
             await _valhallaDbContext.SaveChangesAsync(cancellationToken);
 
-            return entity.Id;
+            return entity;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +32,8 @@ namespace Valhalla.Application.Entities.Commands.UpdateEntity
         public async Task<Guid> Handle(UpdateEntityCommand<TDto> request, CancellationToken cancellationToken)
         {
             var entityId = request.Dto.Id;
-            var entity = await _valhallaDbContext.Set<TEntity>().FindAsync(entityId).ConfigureAwait(false);
+            var entitySet = _valhallaDbContext.Set<TEntity>();
+            var entity = await entitySet.FindAsync(entityId);
 
             if (entity is null)
             {
@@ -42,8 +42,8 @@ namespace Valhalla.Application.Entities.Commands.UpdateEntity
 
             var updatedEntity = _mapper.Map(request.Dto, entity);
 
-            _valhallaDbContext.Entry(updatedEntity).State = EntityState.Modified;
-            await _valhallaDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            entitySet.Update(updatedEntity);
+            await _valhallaDbContext.SaveChangesAsync(cancellationToken);
 
             return updatedEntity.Id;
         }

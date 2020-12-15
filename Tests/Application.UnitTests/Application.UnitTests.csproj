@@ -26,4 +26,8 @@
         <ProjectReference Include="..\..\Src\Application\Valhalla.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Addresses" />
+    </ItemGroup>
+
 </Project>

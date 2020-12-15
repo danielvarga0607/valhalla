@@ -21,15 +21,15 @@ namespace Valhalla.Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddTransient(typeof(IRequestHandler<CreateEntityCommand<PersonDto>, Guid>), typeof(CreateEntityCommandHandler<PersonDto, Person>));
+            services.AddTransient(typeof(IRequestHandler<CreateEntityCommand<PersonDto,Person>, Person>), typeof(CreateEntityCommandHandler<PersonDto, Person>));
             services.AddTransient(typeof(IRequestHandler<GetEntityQuery<Person>, IDto>), typeof(GetEntityQueryHandler<PersonDto, Person>));
             services.AddTransient(typeof(IRequestHandler<UpdateEntityCommand<PersonDto>, Guid>), typeof(UpdateEntityCommandHandler<PersonDto, Person>));
-            services.AddTransient(typeof(IRequestHandler<DeleteEntityCommand<Person>, bool>), typeof(DeleteEntityCommandHandler<Person>));
+            services.AddTransient(typeof(IRequestHandler<DeleteEntityCommand<Person>, int>), typeof(DeleteEntityCommandHandler<Person>));
 
-            services.AddTransient(typeof(IRequestHandler<CreateEntityCommand<AddressDto>, Guid>), typeof(CreateEntityCommandHandler<AddressDto, Address>));
+            services.AddTransient(typeof(IRequestHandler<CreateEntityCommand<AddressDto, Address>, Address>), typeof(CreateEntityCommandHandler<AddressDto, Address>));
             services.AddTransient(typeof(IRequestHandler<GetEntityQuery<Address>, IDto>), typeof(GetEntityQueryHandler<AddressDto, Address>));
             services.AddTransient(typeof(IRequestHandler<UpdateEntityCommand<AddressDto>, Guid>), typeof(UpdateEntityCommandHandler<AddressDto, Address>));
-            services.AddTransient(typeof(IRequestHandler<DeleteEntityCommand<Address>, bool>), typeof(DeleteEntityCommandHandler<Address>));
+            services.AddTransient(typeof(IRequestHandler<DeleteEntityCommand<Address>, int>), typeof(DeleteEntityCommandHandler<Address>));
         }
     }
 }
