@@ -8,7 +8,7 @@ using Valhalla.Domain.Entities;
 
 namespace Valhalla.Application.Entities.Queries.GetEntity
 {
-    public class GetEntityQuery<TEntity> : IRequest<IDto> where TEntity:  EntityBase 
+    public class GetEntityQuery<TEntity> : IRequest<IDto> where TEntity : EntityBase
     {
         public IDto Dto { get; set; }
     }
