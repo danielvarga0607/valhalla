@@ -28,7 +28,7 @@ namespace Application.UnitTests.Entities.Commands.UpdateEntity
                 TestAutoMapper.Instance);
 
             // Act
-            var result = await sut.Handle(new UpdateEntityCommand<PersonDto>
+            var result = await sut.Handle(new UpdateEntityCommand<PersonDto, Person>
             {
                 Dto = new PersonDto
                 {
@@ -39,7 +39,12 @@ namespace Application.UnitTests.Entities.Commands.UpdateEntity
             }, CancellationToken.None);
 
             // Assert
-            result.Should().Be(_johnPersonId);
+            result.Should().BeEquivalentTo(new Person
+            {
+                Id = _johnPersonId,
+                Age = 12,
+                Name = "Richard"
+            });
         }
 
         [Fact]
@@ -52,7 +57,7 @@ namespace Application.UnitTests.Entities.Commands.UpdateEntity
             var entityId = new Guid("699F8C72-73DB-48FC-A657-A3E693CED5F2");
 
             // Act
-            var exception = await Assert.ThrowsAsync<NotFoundException>(() => sut.Handle(new UpdateEntityCommand<PersonDto>
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => sut.Handle(new UpdateEntityCommand<PersonDto, Person>
             {
                 Dto = new PersonDto
                 {

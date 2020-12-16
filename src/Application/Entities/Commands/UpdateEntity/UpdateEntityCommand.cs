@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Valhalla.Application.Common.Exceptions;
@@ -9,12 +8,14 @@ using Valhalla.Domain.Entities;
 
 namespace Valhalla.Application.Entities.Commands.UpdateEntity
 {
-    public class UpdateEntityCommand<TDto> : IRequest<Guid> where TDto : IDto
+    public class UpdateEntityCommand<TDto, TEntity> : IRequest<TEntity>
+        where TDto : IDto
+        where TEntity : EntityBase
     {
         public TDto Dto { get; set; }
     }
 
-    public class UpdateEntityCommandHandler<TDto, TEntity> : IRequestHandler<UpdateEntityCommand<TDto>, Guid>
+    public class UpdateEntityCommandHandler<TDto, TEntity> : IRequestHandler<UpdateEntityCommand<TDto, TEntity>, TEntity>
         where TDto : IDto
         where TEntity : EntityBase
     {
@@ -29,7 +30,7 @@ namespace Valhalla.Application.Entities.Commands.UpdateEntity
             _mapper = mapper;
         }
 
-        public async Task<Guid> Handle(UpdateEntityCommand<TDto> request, CancellationToken cancellationToken)
+        public async Task<TEntity> Handle(UpdateEntityCommand<TDto, TEntity> request, CancellationToken cancellationToken)
         {
             var entityId = request.Dto.Id;
             var entitySet = _valhallaDbContext.Set<TEntity>();
@@ -45,7 +46,7 @@ namespace Valhalla.Application.Entities.Commands.UpdateEntity
             entitySet.Update(updatedEntity);
             await _valhallaDbContext.SaveChangesAsync(cancellationToken);
 
-            return updatedEntity.Id;
+            return updatedEntity;
         }
     }
 }

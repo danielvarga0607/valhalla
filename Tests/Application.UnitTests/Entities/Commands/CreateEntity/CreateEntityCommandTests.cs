@@ -23,12 +23,12 @@ namespace Application.UnitTests.Entities.Commands.CreateEntity
         public async Task CreateEntityCommandHandlerTest()
         {
             // Arrange
-            var sut = new CreateEntityCommandHandler<PersonDto, Person>(
+            var sut = new CreateEntityCommandHandler<Person>(
                 TestAutoMapper.Instance,
                 ValhallaDbContextMock().Object);
 
             // Act
-            var person = await sut.Handle(new CreateEntityCommand<PersonDto, Person>
+            var person = await sut.Handle(new CreateEntityCommand<Person>
             {
                 Dto = new PersonDto
                 {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Valhalla.Application;
 using Valhalla.Infrastructure;
 using Valhalla.Web.Installers;
+using Valhalla.Web.Middlewares;
 using Valhalla.Web.Options;
 
 namespace Valhalla.Web
@@ -50,6 +51,9 @@ namespace Valhalla.Web
 
             app.UseRouting();
 
+            // global error handler
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }

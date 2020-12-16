@@ -7,15 +7,12 @@ using Valhalla.Domain.Entities;
 
 namespace Valhalla.Application.Entities.Commands.CreateEntity
 {
-    public class CreateEntityCommand<TDto, TEntity> : IRequest<TEntity>
-        where TDto : IDto
-        where TEntity : EntityBase
+    public class CreateEntityCommand<TEntity> : IRequest<TEntity> where TEntity : EntityBase
     {
-        public TDto Dto { get; set; }
+        public IDto Dto { get; set; }
     }
 
-    public class CreateEntityCommandHandler<TDto, TEntity> : IRequestHandler<CreateEntityCommand<TDto, TEntity>, TEntity>
-        where TDto : IDto
+    public class CreateEntityCommandHandler<TEntity> : IRequestHandler<CreateEntityCommand<TEntity>, TEntity>
         where TEntity : EntityBase
     {
         private readonly IMapper _mapper;
@@ -29,7 +26,7 @@ namespace Valhalla.Application.Entities.Commands.CreateEntity
             _valhallaDbContext = valhallaDbContext;
         }
 
-        public async Task<TEntity> Handle(CreateEntityCommand<TDto, TEntity> request, CancellationToken cancellationToken)
+        public async Task<TEntity> Handle(CreateEntityCommand<TEntity> request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<TEntity>(request.Dto);
 

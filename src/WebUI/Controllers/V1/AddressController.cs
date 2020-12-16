@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Valhalla.Application.Addresses.Queries.GetAddresses;
+using Valhalla.Application.Common.Exceptions;
 using Valhalla.Application.Entities.Commands.CreateEntity;
 using Valhalla.Application.Entities.Commands.DeleteEntity;
 using Valhalla.Application.Entities.Commands.UpdateEntity;
-using Valhalla.Application.Entities.Queries.GetEntity;
+using Valhalla.Application.Entities.Queries.ReadEntity;
 using Valhalla.Domain.Entities;
 using Valhalla.Web.Contracts.V1;
 using Valhalla.Web.Extensions;
@@ -13,42 +14,41 @@ using Valhalla.Web.Extensions;
 namespace Valhalla.Web.Controllers.V1
 {
     [ApiController]
-    [Route(ApiRoutes.Addresses)]
     public class AddressController : ApiControllerBase
     {
-        [HttpPost]
+        [HttpPost(ApiRoutes.Addresses.Create)]
         public async Task<IActionResult> Create([FromBody] AddressDto dto)
         {
             if (dto.Id != Guid.Empty)
             {
-                return BadRequest();
+                throw new AppException();
             }
 
-            var entity = await Mediator.Send(new CreateEntityCommand<AddressDto, Address> {Dto = dto});
+            var entity = await Mediator.Send(new CreateEntityCommand<Address> {Dto = dto});
 
             return Created(HttpContext.GetLocation(entity.Id), entity);
         }
 
-        [HttpGet("{id:Guid}")]
-        public async Task<IActionResult> Read([FromRoute] Guid id)
+        [HttpGet(ApiRoutes.Addresses.Get)]
+        public async Task<IActionResult> Read([FromRoute] Guid addressId)
         {
-            return Ok(await Mediator.Send(new GetEntityQuery<Address> {Dto = new AddressDto {Id = id}}));
+            return Ok(await Mediator.Send(new ReadEntityQuery<Address> {Dto = new AddressDto {Id = addressId}}));
         }
 
-        [HttpPut]
+        [HttpPut(ApiRoutes.Addresses.Update)]
         public async Task<IActionResult> Update([FromBody] AddressDto dto)
         {
             if (dto.Id == Guid.Empty)
             {
-                return BadRequest();
+                throw new AppException();
             }
 
-            await Mediator.Send(new UpdateEntityCommand<AddressDto> {Dto = dto});
+            var updatedAddress = await Mediator.Send(new UpdateEntityCommand<AddressDto, Address> {Dto = dto});
 
-            return NoContent();
+            return Ok(updatedAddress);
         }
 
-        [HttpDelete("{id:Guid}")]
+        [HttpDelete(ApiRoutes.Addresses.Delete)]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             await Mediator.Send(new DeleteEntityCommand<Address> {Id = id});

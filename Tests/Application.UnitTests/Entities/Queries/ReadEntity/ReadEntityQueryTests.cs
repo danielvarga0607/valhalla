@@ -8,28 +8,28 @@ using Moq;
 using Moq.EntityFrameworkCore;
 using Valhalla.Application.Common.Exceptions;
 using Valhalla.Application.Common.Interfaces;
-using Valhalla.Application.Entities.Queries.GetEntity;
+using Valhalla.Application.Entities.Queries.ReadEntity;
 using Valhalla.Application.Persons.Queries.GetPersons;
 using Valhalla.Domain.Entities;
 using Xunit;
 
-namespace Application.UnitTests.Entities.Queries.GetEntity
+namespace Application.UnitTests.Entities.Queries.ReadEntity
 {
-    public class GetEntityQueryTests
+    public class ReadEntityQueryTests
     {
         private readonly Guid _johnPersonId = new Guid("B420F57A-CCFA-4E78-A074-2E5D1D01DD74");
         private readonly Guid _jamesPersonId = new Guid("9913EA6F-59A0-4E85-891C-11F3A500A43F");
 
         [Fact]
-        public async Task GetEntityQueryHandlerTest_Entity_Is_Person()
+        public async Task ReadEntityQueryHandlerTest_Entity_Is_Person()
         {
             // Arrange
-            var sut = new GetEntityQueryHandler<PersonDto, Person>(
+            var sut = new ReadEntityQueryHandler<PersonDto, Person>(
                 ValhallaDbContextMock().Object,
                 TestAutoMapper.Instance);
 
             // Act
-            var dto = await sut.Handle(new GetEntityQuery<Person>
+            var dto = await sut.Handle(new ReadEntityQuery<Person>
             {
                 Dto = new PersonDto
                 {
@@ -45,16 +45,16 @@ namespace Application.UnitTests.Entities.Queries.GetEntity
         }
 
         [Fact]
-        public async Task GetEntityQueryHandlerTest_Throw_Not_Found_Exception()
+        public async Task ReadEntityQueryHandlerTest_Throw_Not_Found_Exception()
         {
             // Arrange
-            var sut = new GetEntityQueryHandler<PersonDto, Person>(
+            var sut = new ReadEntityQueryHandler<PersonDto, Person>(
                 ValhallaDbContextMock().Object,
                 TestAutoMapper.Instance);
             var entityId = Guid.NewGuid();
 
             // Act
-            var exception = await Assert.ThrowsAsync<NotFoundException>(() => sut.Handle(new GetEntityQuery<Person>
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => sut.Handle(new ReadEntityQuery<Person>
             {
                 Dto = new PersonDto
                 {
