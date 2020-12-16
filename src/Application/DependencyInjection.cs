@@ -19,8 +19,7 @@ namespace Valhalla.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            // services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            
+
             services
                 .RegisterCrudDependencies<Person, PersonDto>()
                 .RegisterCrudDependencies<Address, AddressDto>();
