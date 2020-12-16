@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -10,7 +11,7 @@ namespace Valhalla.Application.Entities.Queries.ReadEntity
 {
     public class ReadEntityQuery<TEntity> : IRequest<IDto> where TEntity : EntityBase
     {
-        public IDto Dto { get; set; }
+        public Guid Id { get; set; }
     }
 
     public class ReadEntityQueryHandler<TDto, TEntity> : IRequestHandler<ReadEntityQuery<TEntity>, IDto>
@@ -30,7 +31,7 @@ namespace Valhalla.Application.Entities.Queries.ReadEntity
 
         public async Task<IDto> Handle(ReadEntityQuery<TEntity> request, CancellationToken cancellationToken)
         {
-            var id = request.Dto.Id;
+            var id = request.Id;
             var entity = await _valhallaDbContext.Set<TEntity>().FindAsync(id);
 
             if (entity is null)

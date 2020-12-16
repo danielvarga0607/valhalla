@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Valhalla.Application.Entities.Commands.UpdateEntity
         where TDto : IDto
         where TEntity : EntityBase
     {
+        public Guid Id { get; set; }
         public TDto Dto { get; set; }
     }
 
@@ -32,7 +34,7 @@ namespace Valhalla.Application.Entities.Commands.UpdateEntity
 
         public async Task<TEntity> Handle(UpdateEntityCommand<TDto, TEntity> request, CancellationToken cancellationToken)
         {
-            var entityId = request.Dto.Id;
+            var entityId = request.Id;
             var entitySet = _valhallaDbContext.Set<TEntity>();
             var entity = await entitySet.FindAsync(entityId);
 

@@ -30,9 +30,9 @@ namespace Application.UnitTests.Entities.Commands.UpdateEntity
             // Act
             var result = await sut.Handle(new UpdateEntityCommand<PersonDto, Person>
             {
+                Id = _johnPersonId,
                 Dto = new PersonDto
                 {
-                    Id = _johnPersonId,
                     Age = 12,
                     Name = "Richard"
                 }
@@ -59,9 +59,9 @@ namespace Application.UnitTests.Entities.Commands.UpdateEntity
             // Act
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => sut.Handle(new UpdateEntityCommand<PersonDto, Person>
             {
+                Id = entityId,
                 Dto = new PersonDto
                 {
-                    Id = entityId,
                     Age = 12,
                     Name = "Richard"
                 }

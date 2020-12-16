@@ -32,7 +32,6 @@ namespace Application.UnitTests.Entities.Commands.CreateEntity
             {
                 Dto = new PersonDto
                 {
-                    Id = Guid.NewGuid(),
                     Age = 23,
                     Name = "James"
                 }

@@ -31,15 +31,11 @@ namespace Application.UnitTests.Entities.Queries.ReadEntity
             // Act
             var dto = await sut.Handle(new ReadEntityQuery<Person>
             {
-                Dto = new PersonDto
-                {
-                    Id = _johnPersonId
-                }
+                Id = _johnPersonId
             }, CancellationToken.None);
             var personDto = dto as PersonDto;
 
             // Assert
-            personDto?.Id.Should().Be(_johnPersonId);
             personDto?.Age.Should().Be(34);
             personDto?.Name.Should().Be("John");
         }
@@ -56,10 +52,7 @@ namespace Application.UnitTests.Entities.Queries.ReadEntity
             // Act
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => sut.Handle(new ReadEntityQuery<Person>
             {
-                Dto = new PersonDto
-                {
-                    Id = entityId
-                }
+                Id = entityId
             }, CancellationToken.None));
 
             exception.Should().BeAssignableTo<NotFoundException>();

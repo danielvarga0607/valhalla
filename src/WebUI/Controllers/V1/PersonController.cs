@@ -19,11 +19,6 @@ namespace Valhalla.Web.Controllers.V1
         [HttpPost(ApiRoutes.People.Create)]
         public async Task<IActionResult> Create([FromBody] PersonDto dto)
         {
-            if (dto.Id != Guid.Empty)
-            {
-                throw new AppException();
-            }
-
             var entity = await Mediator.Send(new CreateEntityCommand<Person> {Dto = dto});
 
             return Created(HttpContext.GetLocation(entity.Id), entity);
@@ -32,18 +27,22 @@ namespace Valhalla.Web.Controllers.V1
         [HttpGet(ApiRoutes.People.Get)]
         public async Task<IActionResult> Read([FromRoute] Guid personId)
         {
-            return Ok(await Mediator.Send(new ReadEntityQuery<Person> {Dto = new PersonDto {Id = personId}}));
+            return Ok(await Mediator.Send(new ReadEntityQuery<Person> {Id = personId}));
         }
 
         [HttpPut(ApiRoutes.People.Update)]
         public async Task<IActionResult> Update([FromRoute] Guid personId, [FromBody] PersonDto dto)
         {
-            if (dto.Id == Guid.Empty)
+            if (personId == Guid.Empty)
             {
                 throw new AppException();
             }
-            
-            var updatedPerson= await Mediator.Send(new UpdateEntityCommand<PersonDto, Person> {Dto = dto});
+
+            var updatedPerson = await Mediator.Send(new UpdateEntityCommand<PersonDto, Person>
+            {
+                Id = personId,
+                Dto = dto
+            });
 
             return Ok(updatedPerson);
         }
