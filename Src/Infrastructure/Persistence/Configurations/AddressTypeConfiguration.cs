@@ -8,6 +8,8 @@ namespace Valhalla.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Address> builder)
         {
+            builder.HasKey(entity => entity.Id);
+            
             builder
                 .Property(entity => entity.Id)
                 .ValueGeneratedOnAdd();

@@ -11,7 +11,7 @@ namespace Valhalla.Application.Entities.Queries.ReadEntity
 {
     public class ReadEntityQuery<TEntity> : IRequest<IDto> where TEntity : EntityBase
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
     }
 
     public class ReadEntityQueryHandler<TDto, TEntity> : IRequestHandler<ReadEntityQuery<TEntity>, IDto>

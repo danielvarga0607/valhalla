@@ -20,14 +20,22 @@ namespace Valhalla.Web.Controllers.V1
         public async Task<IActionResult> Create([FromBody] AddressDto dto)
         {
             var entity = await Mediator.Send(new CreateEntityCommand<Address> {Dto = dto});
-
-            return Created(HttpContext.GetLocation(entity.Id), entity);
+            var location = HttpContext.GetLocation(entity.Id);
+            
+            return Created(location, entity);
         }
 
         [HttpGet(ApiRoutes.Addresses.Get)]
         public async Task<IActionResult> Read([FromRoute] Guid addressId)
         {
-            return Ok(await Mediator.Send(new ReadEntityQuery<Address> {Id = addressId}));
+            if (addressId == Guid.Empty)
+            {
+                throw new AppException();
+            }
+            
+            var addressDto = await Mediator.Send(new ReadEntityQuery<Address> {Id = addressId});
+            
+            return Ok(addressDto);
         }
 
         [HttpPut(ApiRoutes.Addresses.Update)]
@@ -48,9 +56,9 @@ namespace Valhalla.Web.Controllers.V1
         }
 
         [HttpDelete(ApiRoutes.Addresses.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid addressId)
         {
-            await Mediator.Send(new DeleteEntityCommand<Address> {Id = id});
+            await Mediator.Send(new DeleteEntityCommand<Address> {Id = addressId});
 
             return NoContent();
         }

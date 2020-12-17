@@ -1,0 +1,2 @@
+dotnet ef migrations add "SampleMigration" --project src\Infrastructure --startup-project src\WebUI --output-dir Persistence\Migrations
+dotnet ef migrations remove "SampleMigration" --project src\Infrastructure --startup-project src\WebUI

@@ -9,7 +9,7 @@ namespace Valhalla.Application.Entities.Commands.CreateEntity
 {
     public class CreateEntityCommand<TEntity> : IRequest<TEntity> where TEntity : EntityBase
     {
-        public IDto Dto { get; set; }
+        public IDto Dto { get; init; }
     }
 
     public class CreateEntityCommandHandler<TEntity> : IRequestHandler<CreateEntityCommand<TEntity>, TEntity>
